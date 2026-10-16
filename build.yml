@@ -1,0 +1,42 @@
+name: Build AI Kotib APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: APK Yig'ish (Flutter)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository kodlarini yuklab olish
+        uses: actions/checkout@v4
+
+      - name: Java 17 o'rnatish
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Flutter SDK o'rnatish
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Android platforma fayllarini yaratish va ruxsatlarni qo'shish
+        run: |
+          flutter create --platforms=android --org uz.xasan.aikotib .
+          sed -i '/<application/i <uses-permission android:name="android.permission.INTERNET"/>\n<uses-permission android:name="android.permission.RECORD_AUDIO"/>\n<uses-permission android:name="android.permission.WAKE_LOCK"/>' android/app/src/main/AndroidManifest.xml
+
+      - name: Kutubxonalarni yuklab olish
+        run: flutter pub get
+
+      - name: Release APK yig'ish
+        run: flutter build apk --release
+
+      - name: Tayyor APK faylni yuklash
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI-Kotib-Xasan-APK
+          path: build/app/outputs/flutter-apk/app-release.apk

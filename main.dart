@@ -1061,7 +1061,7 @@ class _MainScreenState extends State<MainScreen> {
         const SizedBox(height: 20),
         const Text(
           '3. Mening rolim va mas\'uliyatlarim (AI filtri uchun)',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(fontWeight: FontWeight.bold, deerStyle: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(height: 6),
         const Text(
